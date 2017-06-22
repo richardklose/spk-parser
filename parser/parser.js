@@ -20,16 +20,52 @@ Parser.prototype.contentToSPK = function(content) {
     let thisGame = new SPK();
     for (let i = 0; i < splittedContent.length; i++) {
         switch (splittedContent[i]) {
+
             case '"Spielnummer"':
-                SPK.gameId = splittedContent[i+1].replace('\"','').replace('\"','')
+                thisGame.gameId = splittedContent[++i].replace('\"','').replace('\"','')
                 break
+
             case '"Titel"':
-                SPK.title = splittedContent[i+1].replace('\"','').replace('\"','')
-            default:
+                thisGame.title = splittedContent[++i].replace('\"','').replace('\"','')
+                break
+
+			case '"gruppenpädagogische Kategorie"':
+				for (let j = 0; j < 8; j++) {
+					if( parseInt(splittedContent[++i]) === 1) {
+						thisGame.groupCat = j
+					}
+				}
+			break
+
+			case '"Material"':
+				thisGame.material = []
+				for(let j = 0; j < 15; j++) {
+					thisGame.material[j] = parseInt(splittedContent[++i]) === 1
+				}
+				break
+
+			case '"Materialname"':
+				thisGame.materialname = splittedContent[++i].replace('\"','').replace('\"','')
+				break
+
+			case '"Spieleart"':
+				thisGame.gameType = splittedContent[++i].replace('\"','').replace('\"','')
+				i++
+				break
+
+			case '"Hintergrund"':
+				thisGame.background = splittedContent[++i] === '#TRUE'
+            	break
+
+			case '"Form 1"':
+				thisGame.form[0] = parseInt(splittedContent[++i])
+				break
+			default:
+                console.log(splittedContent[i])
                 break
         }
     }
-    console.log(SPK)
+    console.log(thisGame)
 }
 
 module.exports = Parser
