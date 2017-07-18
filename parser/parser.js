@@ -38,14 +38,18 @@ Parser.prototype.contentToSPK = function(content) {
 			break
 
 			case '"Material"':
-				thisGame.material = []
-				for(let j = 0; j < 15; j++) {
-					thisGame.material[j] = parseInt(splittedContent[++i]) === 1
+				if(splittedContent[i+1] === "1" || splittedContent[i+1] === "0") {
+					thisGame.material = []
+					for(let j = 0; j < 15; j++) {
+						thisGame.material[j] = parseInt(splittedContent[++i]) === 1
+					}
+				} else {
+					thisGame.materialDescription = splittedContent[++i].replace('\"','').replace('\"','')
 				}
 				break
 
 			case '"Materialname"':
-				thisGame.materialname = splittedContent[++i].replace('\"','').replace('\"','')
+				thisGame.materialName = splittedContent[++i].replace('\"','').replace('\"','')
 				break
 
 			case '"Spieleart"':
@@ -60,8 +64,46 @@ Parser.prototype.contentToSPK = function(content) {
 			case '"Form 1"':
 				thisGame.form[0] = parseInt(splittedContent[++i])
 				break
+
+			case '"Form 2"':
+				thisGame.form[1] = parseInt(splittedContent[++i])
+				break
+
+			case '"Character 1"':
+				thisGame.character[0] = parseInt(splittedContent[++i])
+				break
+
+			case '"Character 2"':
+				thisGame.character[1] = parseInt(splittedContent[++i])
+				break
+
+			case '"Ort 1"':
+				thisGame.location[0] = parseInt(splittedContent[++i])
+				break
+
+			case '"Ort 2"':
+				thisGame.location[1] = parseInt(splittedContent[++i])
+				break
+
+			case '"Spieler"':
+				thisGame.playerCount = parseInt(splittedContent[++i])
+				thisGame.playerText = splittedContent[++i].replace('\"','').replace('\"','')
+				break
+
+			case '"Spielregel"':
+				thisGame.rules = ""
+				let finished = false
+				while (!finished) {
+					let line = splittedContent[++i]
+					if(line[line.length-1] === '"') {
+						finished = true
+					}
+					thisGame.rules += line.replace('\"','').replace('\"','')
+				}
+				break
+
 			default:
-                console.log(splittedContent[i])
+                // console.log(splittedContent[i])
                 break
         }
     }
