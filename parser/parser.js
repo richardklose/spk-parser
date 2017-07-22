@@ -53,7 +53,7 @@ Parser.prototype.contentToSPK = function(content) {
 				break
 
 			case '"Spieleart"':
-				thisGame.gameType = splittedContent[++i].replace('\"','').replace('\"','')
+				thisGame.gameType = parseInt(splittedContent[++i])
 				i++
 				break
 
@@ -102,8 +102,16 @@ Parser.prototype.contentToSPK = function(content) {
 				}
 				break
 
+			case '"Wann 1"':
+				thisGame.time[0] = parseInt(splittedContent[++i])
+				break
+
+			case '"Wann 2"':
+				thisGame.time[1] = parseInt(splittedContent[++i])
+				break
+
 			default:
-                // console.log(splittedContent[i])
+                 // console.log(splittedContent[i])
                 break
         }
     }
