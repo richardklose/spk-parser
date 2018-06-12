@@ -6,13 +6,10 @@ let Parser = function() {
 }
 
 Parser.prototype.readFile = function(theFile) {
-    fs.readFile(theFile, (err, data) => {
-        if (err) throw err;
-        else {
-            let content = iconvlite.decode(data, 'win1252')
-            this.contentToSPK(content)
-        }
-    })
+    const data = fs.readFileSync(theFile)
+     let content = iconvlite.decode(data, 'win1252')
+     return this.contentToSPK(content)
+
 }
 
 Parser.prototype.contentToSPK = function(content) {
@@ -115,7 +112,7 @@ Parser.prototype.contentToSPK = function(content) {
                 break
         }
     }
-    console.log(thisGame)
+    return thisGame
 }
 
 module.exports = Parser
